@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://d46wrkgdeynk"]
+[gd_scene load_steps=19 format=3 uid="uid://d46wrkgdeynk"]
 
 [ext_resource type="Script" path="res://scripts/initialize-webxr.gd" id="1_wh60i"]
+[ext_resource type="Script" path="res://scripts/grabbable.gd" id="2_oji5t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fjijl"]
 size = Vector3(0.5, 1.5, 0.5)
@@ -31,23 +32,27 @@ albedo_color = Color(0.47451, 0.341176, 0.27451, 1)
 size = Vector3(10, 1, 10)
 
 [sub_resource type="SphereMesh" id="SphereMesh_kcpmb"]
-radius = 0.25
-height = 0.5
+radius = 0.1
+height = 0.2
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ywgmd"]
 albedo_color = Color(0.85098, 0.27451, 0.407843, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2ujm3"]
-radius = 0.25
+radius = 0.1
 
 [sub_resource type="BoxMesh" id="BoxMesh_66x83"]
-size = Vector3(0.25, 0.25, 0.25)
+size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ls27d"]
 albedo_color = Color(0, 0.607843, 0.607843, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_50cpn"]
-size = Vector3(0.25, 0.25, 0.25)
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8ctux"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nrac6"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_wh60i")
@@ -64,12 +69,14 @@ shape = SubResource("BoxShape3D_fjijl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 
 [node name="LeftController" type="XRController3D" parent="XRUser/XROrigin3D"]
+unique_name_in_owner = true
 tracker = &"left_hand"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="XRUser/XROrigin3D/LeftController"]
 mesh = SubResource("BoxMesh_4yuhj")
 
 [node name="RightController" type="XRController3D" parent="XRUser/XROrigin3D"]
+unique_name_in_owner = true
 tracker = &"right_hand"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="XRUser/XROrigin3D/RightController"]
@@ -109,7 +116,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_trsr2")
 
 [node name="Sphere" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152019, 0.410554, -3.17832)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.316608, 1.30355, -0.666265)
+script = ExtResource("2_oji5t")
 
 [node name="SphereMesh" type="MeshInstance3D" parent="Sphere"]
 mesh = SubResource("SphereMesh_kcpmb")
@@ -120,9 +128,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ywgmd")
 shape = SubResource("SphereShape3D_2ujm3")
 
 [node name="Box" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.088, -3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195619, 1.18207, -0.652274)
 gravity_scale = 0.05
-angular_velocity = Vector3(3.14159, 3.14159, 0)
+script = ExtResource("2_oji5t")
 
 [node name="BoxMesh" type="MeshInstance3D" parent="Box"]
 mesh = SubResource("BoxMesh_66x83")
@@ -131,3 +139,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ls27d")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box"]
 shape = SubResource("BoxShape3D_50cpn")
+
+[node name="Pedestal" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.891993)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pedestal"]
+mesh = SubResource("BoxMesh_8ctux")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pedestal"]
+shape = SubResource("BoxShape3D_nrac6")
